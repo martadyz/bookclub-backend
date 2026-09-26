@@ -74,13 +74,6 @@ public class AuthController {
         );
     }
 
-//    @PostMapping("/register")
-//    public Member register(
-//            @RequestBody RegisterRequest request) {
-//
-//        return memberService.register(request);
-//    }
-
     @PostMapping("/logout")
     public void logout(
             HttpServletRequest request) {
