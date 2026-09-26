@@ -25,30 +25,69 @@ public class RatingService {
         this.bookRepository = bookRepository;
     }
 
-    public Rating createRating(
-            Long memberId,
-            Long bookId,
-            Double score) {
-
+    private void validateScore(Double score) {
         if (score < 1 || score > 10) {
             throw new IllegalArgumentException(
                     "Rating must be between 1 and 10");
         }
+    }
 
-        if (ratingRepository.existsByMemberIdAndBookId(
-                memberId, bookId)) {
-
-            throw new IllegalStateException(
-                    "Member has already rated this book");
-        }
-
-        Member member = memberRepository.findById(memberId)
+    private Member findMemberByUsername(String loggedInUsername) {
+       return memberRepository
+                .findByName(loggedInUsername)
                 .orElseThrow(() ->
                         new RuntimeException("Member not found"));
+    }
 
-        Book book = bookRepository.findById(bookId)
+    private Book findBookById(Long bookId) {
+        return bookRepository.findById(bookId)
                 .orElseThrow(() ->
                         new RuntimeException("Book not found"));
+    }
+
+    private Member findMemberById(Long memberId) {
+        return memberRepository
+                .findById(memberId)
+                .orElseThrow(() ->
+                        new RuntimeException("Member not found"));
+    }
+
+    private Rating findRatingByMemberIdAndBookId(Long memberId, Long bookId) {
+        return ratingRepository
+                .findByMemberIdAndBookId(
+                        memberId,
+                        bookId
+                )
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Rating not found"
+                        ));
+    }
+
+    private void checkIfMemberAndBookExists(Member member, Long bookId) {
+        if (ratingRepository
+                .existsByMemberIdAndBookId(
+                        member.getId(),
+                        bookId)) {
+
+            throw new IllegalStateException(
+                    "Member has already rated this book"
+            );
+        }
+    }
+
+
+    public Rating createRating(
+            String loggedInUsername,
+            Long bookId,
+            Double score) {
+
+        Member member = findMemberByUsername(loggedInUsername);
+        validateScore(score);
+
+        checkIfMemberAndBookExists(member, bookId);
+
+        Book book = findBookById(bookId);
 
         Rating rating = new Rating(member, book, score);
 
@@ -56,21 +95,48 @@ public class RatingService {
     }
 
     public Rating updateRating(
+            String loggedInUsername,
+            Long bookId,
+            Double score) {
+
+        Member member = findMemberByUsername(loggedInUsername);
+        validateScore(score);
+
+        Rating rating = findRatingByMemberIdAndBookId(member.getId(), bookId);
+
+        rating.setScore(score);
+
+        return ratingRepository.save(rating);
+    }
+
+    public Rating createRatingForMember(
             Long memberId,
             Long bookId,
             Double score) {
 
-        if (score < 1 || score > 10) {
-            throw new IllegalArgumentException(
-                    "Rating must be between 1 and 10"
-            );
-        }
+        validateScore(score);
+        Member member = findMemberById(memberId);
+        Book book = findBookById(bookId);
 
-        Rating rating = ratingRepository
-                .findByMemberIdAndBookId(memberId, bookId)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Rating not found"));
+        checkIfMemberAndBookExists(member, bookId);
+
+        Rating rating = new Rating(
+                member,
+                book,
+                score
+        );
+
+        return ratingRepository.save(rating);
+    }
+
+    public Rating updateRatingForMember(
+            Long memberId,
+            Long bookId,
+            Double score) {
+
+        validateScore(score);
+
+        Rating rating = findRatingByMemberIdAndBookId(memberId, bookId);
 
         rating.setScore(score);
 

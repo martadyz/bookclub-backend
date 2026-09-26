@@ -1,9 +1,12 @@
 package com.apps.bookclub.controllers;
 
+import com.apps.bookclub.dtos.AdminCreateRatingRequest;
 import com.apps.bookclub.dtos.CreateRatingRequest;
 import com.apps.bookclub.dtos.RatingResponse;
 import com.apps.bookclub.entities.Rating;
 import com.apps.bookclub.services.RatingService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,10 +21,11 @@ public class RatingController {
 
     @PostMapping
     public RatingResponse createRating(
-            @RequestBody CreateRatingRequest request) {
+            @RequestBody CreateRatingRequest request,
+            Authentication authentication) {
 
         Rating rating = ratingService.createRating(
-                request.memberId(),
+                authentication.getName(),
                 request.bookId(),
                 request.score()
         );
@@ -34,13 +38,54 @@ public class RatingController {
     }
 
     @PutMapping
-    public Rating updateRating(
-            @RequestBody CreateRatingRequest request) {
+    public RatingResponse updateRating(
+            @RequestBody CreateRatingRequest request,
+            Authentication authentication) {
 
-        return ratingService.updateRating(
+        Rating rating =  ratingService.updateRating(
+                authentication.getName(),
+                request.bookId(),
+                request.score()
+        );
+
+        return new RatingResponse(
+                rating.getId(),
+                rating.getMember().getId(),
+                rating.getBook().getId(),
+                rating.getScore());
+    }
+
+    @PostMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public RatingResponse createRatingForMember(
+            @RequestBody AdminCreateRatingRequest request) {
+
+        Rating rating = ratingService.createRatingForMember(
                 request.memberId(),
                 request.bookId(),
                 request.score()
         );
+        return new RatingResponse(
+                rating.getId(),
+                rating.getMember().getId(),
+                rating.getBook().getId(),
+                rating.getScore());
+    }
+
+    @PutMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public RatingResponse updateRatingForMember(
+            @RequestBody AdminCreateRatingRequest request) {
+
+        Rating rating =  ratingService.updateRatingForMember(
+                request.memberId(),
+                request.bookId(),
+                request.score()
+        );
+        return new RatingResponse(
+                rating.getId(),
+                rating.getMember().getId(),
+                rating.getBook().getId(),
+                rating.getScore());
     }
 }

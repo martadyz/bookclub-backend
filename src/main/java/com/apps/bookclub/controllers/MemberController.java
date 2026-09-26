@@ -1,6 +1,6 @@
 package com.apps.bookclub.controllers;
 
-import com.apps.bookclub.dtos.CreateMemberRequest;
+import com.apps.bookclub.dtos.LoginRequest;
 import com.apps.bookclub.entities.Member;
 import com.apps.bookclub.services.MemberService;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class MemberController {
 
     // CREATE (POST)
     @PostMapping
-    public Member addMember(@RequestBody CreateMemberRequest member) {
+    public Member addMember(@RequestBody LoginRequest member) {
         return memberService.createMember(member);
     }
 

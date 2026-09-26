@@ -1,6 +1,7 @@
 package com.apps.bookclub.entities;
 
 import com.apps.bookclub.dtos.RatingResponse;
+import com.apps.bookclub.enums.Role;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -14,8 +15,16 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
 
     @OneToMany(mappedBy = "member")
     private List<Rating> ratings = new ArrayList<>();
@@ -23,12 +32,20 @@ public class Member {
     protected Member() {
     }
 
-    public Member(String name) {
+    public Member(String name, String password, Role role) {
         this.name = name;
+        this.password = password;
+        this.role = role;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+    public void setPassword(String password) {
+        this.name = password;
+    }
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getName() {
@@ -38,6 +55,13 @@ public class Member {
     public Long getId() {
         return this.id;
     }
+    public String getPassword() {
+        return this.password;
+    }
+    public Role getRole() {
+        return this.role;
+    }
+
 
     public List<RatingResponse> getRatings() {
         return ratings.stream()
