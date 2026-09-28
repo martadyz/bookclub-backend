@@ -36,6 +36,15 @@ public class BookService {
         return bookRepository.save(book);
     }
 
+    public Book updateBook(Long id, CreateBookRequest request) {
+        Book book = getBook(id);
+
+        book.setTitle(request.title());
+        book.setMeetingDate(request.meetingDate());
+
+        return bookRepository.save(book);
+    }
+
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }

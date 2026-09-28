@@ -42,14 +42,18 @@ public class BookController {
         );
     }
 
-//    @PostMapping
-//    public Book createBook(@RequestBody Book book) {
-//        return bookService.createBook(book);
-//    }
 
     @PostMapping
     public Book createBook(@RequestBody CreateBookRequest request) {
         return bookService.createBook(request);
+    }
+
+    @PutMapping("/{id}")
+    public Book updateBook(
+            @PathVariable Long id,
+            @RequestBody CreateBookRequest request) {
+
+        return bookService.updateBook(id, request);
     }
 
     @DeleteMapping("/{id}")
