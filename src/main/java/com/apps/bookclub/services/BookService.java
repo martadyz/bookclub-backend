@@ -17,7 +17,7 @@ public class BookService {
     }
 
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        return bookRepository.findAllByOrderByMeetingDateDesc();
     }
 
     public Book getBook(Long id) {

@@ -25,7 +25,8 @@ public class BookController {
                         book.getId(),
                         book.getTitle(),
                         book.getMeetingDate(),
-                        book.getAverageRating()
+                        book.getAverageRating(),
+                        book.getRatings()
                 ))
                 .toList();
     }
@@ -38,7 +39,8 @@ public class BookController {
                 book.getId(),
                 book.getTitle(),
                 book.getMeetingDate(),
-                book.getAverageRating()
+                book.getAverageRating(),
+                book.getRatings()
         );
     }
 

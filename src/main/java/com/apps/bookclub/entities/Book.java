@@ -1,6 +1,6 @@
 package com.apps.bookclub.entities;
 
-import com.apps.bookclub.dtos.RatingResponse;
+import com.apps.bookclub.dtos.BookRatingResponse;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -42,12 +42,11 @@ public class Book {
         return meetingDate;
     }
 
-    public List<RatingResponse> getRatings() {
+    public List<BookRatingResponse> getRatings() {
         return ratings.stream()
-                .map(rating -> new RatingResponse(
-                        rating.getId(),
+                .map(rating -> new BookRatingResponse(
+                        rating.getMember().getName(),
                         rating.getMember().getId(),
-                        rating.getBook().getId(),
                         rating.getScore()
                 ))
                 .toList();
