@@ -1,5 +1,5 @@
 package com.apps.bookclub.dtos;
 
-public record User(String name,
+public record User(Long id, String name,
                    String role) {
 }

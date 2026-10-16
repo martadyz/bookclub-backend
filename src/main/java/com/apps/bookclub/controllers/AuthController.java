@@ -113,8 +113,13 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .orElse("ROLE_USER");
 
+        Member member = memberRepository
+                .findByName(user.getUsername())
+                .orElseThrow();
+
         return ResponseEntity.ok(
                 new User(
+                        member.getId(),
                         user.getUsername(),
                         role
                 )
