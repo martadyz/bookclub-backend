@@ -3,6 +3,8 @@ package com.apps.bookclub.entities;
 import com.apps.bookclub.dtos.BookRatingResponse;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +55,13 @@ public class Book {
     }
 
     public double getAverageRating() {
-        return ratings.stream()
+        double average = ratings.stream()
                 .mapToDouble(Rating::getScore)
                 .average()
                 .orElse(0.0);
+        return BigDecimal.valueOf(average)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public void setTitle(String title) {
