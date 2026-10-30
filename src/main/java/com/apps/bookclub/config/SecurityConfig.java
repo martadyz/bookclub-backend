@@ -97,7 +97,7 @@ public class SecurityConfig {
                 new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:4200", "https://book-club-fe.onrender.com")
+                List.of("http://localhost:4200", "https://app.happybookclub.pl")
         );
 
         configuration.setAllowedMethods(
