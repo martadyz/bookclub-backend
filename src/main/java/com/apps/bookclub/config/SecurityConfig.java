@@ -77,12 +77,7 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 "/auth/register",
-                                "/auth/login",
-                                "/auth/me",
-                                "/books",
-                                "/members",
-                                "/ratings",
-                                "/ratings/admin"
+                                "/auth/login"
                         ).permitAll()
 
                         .anyRequest()
