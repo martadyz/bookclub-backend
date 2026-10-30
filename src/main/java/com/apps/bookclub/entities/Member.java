@@ -42,7 +42,7 @@ public class Member {
         this.name = name;
     }
     public void setPassword(String password) {
-        this.name = password;
+        this.password = password;
     }
     public void setRole(Role role) {
         this.role = role;

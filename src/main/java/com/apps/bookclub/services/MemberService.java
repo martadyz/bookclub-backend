@@ -30,14 +30,15 @@ public class MemberService {
                         new RuntimeException("Member not found"));
     }
 
-//    public Member createMember(CreateMemberRequest request) {
-//
-//
-//        Member member = new Member(
-//                request.name()
-//        );
-//        return memberRepository.save(member);
-//    }
+    public void changePassword(Long id, String newPassword) {
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new IllegalArgumentException("Password cannot be blank");
+        }
+
+        Member member = getMember(id);
+        member.setPassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
+    }
 
     public void deleteMember(Long id) {
         memberRepository.deleteById(id);

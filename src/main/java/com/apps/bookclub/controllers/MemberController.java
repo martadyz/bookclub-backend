@@ -1,8 +1,10 @@
 package com.apps.bookclub.controllers;
 
+import com.apps.bookclub.dtos.ChangePasswordRequest;
 import com.apps.bookclub.dtos.LoginRequest;
 import com.apps.bookclub.entities.Member;
 import com.apps.bookclub.services.MemberService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +34,14 @@ public class MemberController {
     @GetMapping("/{id}")
     public Member getMember(@PathVariable Long id) {
         return memberService.getMember(id);
+    }
+
+    @PutMapping("/{id}/password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void changePassword(
+            @PathVariable Long id,
+            @RequestBody ChangePasswordRequest request) {
+        memberService.changePassword(id, request.password());
     }
 
     @DeleteMapping("/{id}")
