@@ -6,6 +6,7 @@ import java.util.List;
 public record BookResponse(
         Long id,
         String title,
+        String author,
         LocalDate meetingDate,
         double averageRating,
         List<BookRatingResponse> ratings

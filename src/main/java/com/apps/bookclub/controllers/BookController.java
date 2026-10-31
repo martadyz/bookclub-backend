@@ -28,6 +28,7 @@ public class BookController {
                 .map(book -> new BookResponse(
                         book.getId(),
                         book.getTitle(),
+                        book.getAuthor(),
                         book.getMeetingDate(),
                         book.getAverageRating(),
                         book.getRatings()
@@ -73,6 +74,7 @@ public class BookController {
         return new BookResponse(
                 book.getId(),
                 book.getTitle(),
+                book.getAuthor(),
                 book.getMeetingDate(),
                 book.getAverageRating(),
                 book.getRatings()

@@ -4,5 +4,6 @@ import java.time.LocalDate;
 
 public record CreateBookRequest(
         String title,
+        String author,
         LocalDate meetingDate
 ) {}

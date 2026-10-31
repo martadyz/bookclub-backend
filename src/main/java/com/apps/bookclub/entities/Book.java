@@ -19,6 +19,8 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
+    private String author;
+
     @Column(name = "meeting_date", nullable = false)
     private LocalDate meetingDate;
 
@@ -27,8 +29,9 @@ public class Book {
 
     protected Book() {}
 
-    public Book(String title, LocalDate meetingDate) {
+    public Book(String title, String author, LocalDate meetingDate) {
         this.title = title;
+        this.author = author;
         this.meetingDate = meetingDate;
     }
 
@@ -38,6 +41,10 @@ public class Book {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public LocalDate getMeetingDate() {
@@ -66,6 +73,10 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public void setMeetingDate(LocalDate meetingDate) {

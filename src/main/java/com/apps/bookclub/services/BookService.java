@@ -30,6 +30,7 @@ public class BookService {
 
         Book book = new Book(
                 request.title(),
+                request.author(),
                 request.meetingDate()
         );
 
@@ -40,6 +41,7 @@ public class BookService {
         Book book = getBook(id);
 
         book.setTitle(request.title());
+        book.setAuthor(request.author());
         book.setMeetingDate(request.meetingDate());
 
         return bookRepository.save(book);
