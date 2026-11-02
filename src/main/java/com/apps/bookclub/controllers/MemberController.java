@@ -1,7 +1,9 @@
 package com.apps.bookclub.controllers;
 
+import com.apps.bookclub.dtos.BookResponse;
 import com.apps.bookclub.dtos.ChangePasswordRequest;
 import com.apps.bookclub.dtos.LoginRequest;
+import com.apps.bookclub.dtos.MemberResponse;
 import com.apps.bookclub.entities.Member;
 import com.apps.bookclub.services.MemberService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,8 +29,16 @@ public class MemberController {
 
     // READ (GET ALL)
     @GetMapping
-    public List<Member> getAllMembers() {
-        return memberService.getAllMembers();
+    public List<MemberResponse> getAllMembers() {
+        return memberService.getAllMembers().stream()
+                .map(book -> new MemberResponse(
+                        book.getId(),
+                        book.getName(),
+                        book.getAverageRating(),
+                        book.getRatings(),
+                        book.getRole()
+                ))
+                .toList();
     }
 
     @GetMapping("/{id}")

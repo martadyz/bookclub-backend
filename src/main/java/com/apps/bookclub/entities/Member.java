@@ -5,6 +5,8 @@ import com.apps.bookclub.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +74,9 @@ public class Member {
                 .mapToDouble(Rating::getScore)
                 .average()
                 .orElse(0.0);
-        return averageRating;
+        return BigDecimal.valueOf(averageRating)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public List<RatingResponse> getRatings() {
