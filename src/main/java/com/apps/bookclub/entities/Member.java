@@ -1,5 +1,6 @@
 package com.apps.bookclub.entities;
 
+import com.apps.bookclub.dtos.MemberRatingsResponse;
 import com.apps.bookclub.dtos.RatingResponse;
 import com.apps.bookclub.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -79,12 +80,12 @@ public class Member {
                 .doubleValue();
     }
 
-    public List<RatingResponse> getRatings() {
+    public List<MemberRatingsResponse> getRatings() {
         return ratings.stream()
-                .map(rating -> new RatingResponse(
+                .map(rating -> new MemberRatingsResponse(
                         rating.getId(),
-                        rating.getMember().getId(),
                         rating.getBook().getId(),
+                        rating.getBook().getTitle(),
                         rating.getScore()
                 ))
                 .toList();

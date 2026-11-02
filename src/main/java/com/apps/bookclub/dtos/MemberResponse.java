@@ -7,7 +7,7 @@ import java.util.List;
 public record MemberResponse(Long id,
                              String name,
                              double averageRating,
-                             List<RatingResponse> ratings,
+                             List<MemberRatingsResponse> ratings,
                              Role role
 ) {
 }
