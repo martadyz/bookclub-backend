@@ -2,6 +2,7 @@ package com.apps.bookclub.entities;
 
 import com.apps.bookclub.dtos.RatingResponse;
 import com.apps.bookclub.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Rating> ratings = new ArrayList<>();
 
+    @Transient
+    private double averageRating;
+
     protected Member() {
     }
 
@@ -55,6 +59,7 @@ public class Member {
     public Long getId() {
         return this.id;
     }
+    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
@@ -62,6 +67,13 @@ public class Member {
         return this.role;
     }
 
+    public double getAverageRating() {
+        averageRating = ratings.stream()
+                .mapToDouble(Rating::getScore)
+                .average()
+                .orElse(0.0);
+        return averageRating;
+    }
 
     public List<RatingResponse> getRatings() {
         return ratings.stream()
